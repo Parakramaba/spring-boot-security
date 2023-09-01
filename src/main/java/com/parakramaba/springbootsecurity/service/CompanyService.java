@@ -15,6 +15,11 @@ import java.util.stream.LongStream;
 @Service("CompanyService")
 public class CompanyService {
 
+
+    /**
+     *
+     * @return
+     */
     public ResponseEntity<?> getAllCompanies() {
         List<Company> companies = LongStream.rangeClosed(1, 5)
                 .mapToObj(i -> new Company(i, "Company " + i, 10))
@@ -23,6 +28,11 @@ public class CompanyService {
         return new ResponseEntity<>(companies, HttpStatus.OK);
     }
 
+    /**
+     *
+     * @param companyName
+     * @return
+     */
     public ResponseEntity<?> getCompanyByName(final String companyName) {
         Company company = Company.builder()
                 .id(15L)
