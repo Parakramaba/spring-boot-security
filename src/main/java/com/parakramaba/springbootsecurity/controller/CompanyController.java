@@ -24,7 +24,7 @@ public class CompanyController {
     }
 
     @GetMapping("/by-name/{companyName}")
-    public ResponseEntity<?> getCompanyByName(@PathVariable("companyName") final String companyName) {
+    public ResponseEntity<?> getCompanyByName(final @PathVariable("companyName") String companyName) {
         return companyService.getCompanyByName(companyName);
     }
 }

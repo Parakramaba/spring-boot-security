@@ -1,15 +1,14 @@
 package com.parakramaba.springbootsecurity.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.parakramaba.springbootsecurity.entity.auth.Role;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.ColumnDefault;
+import lombok.*;
 import org.hibernate.annotations.Generated;
 import org.hibernate.generator.EventType;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "user")
@@ -17,26 +16,33 @@ import java.io.Serializable;
 @AllArgsConstructor
 @Setter
 @Getter
+@Builder
 public class User implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
-    private Integer id;
+    private Long id;
 
-    @Column(nullable = false, length = 254)
+    @Column(nullable = false, length = 254, unique = true)
     private String userName;
 
     @Column(nullable = false, length = 254)
     private String password;
 
-    // TODO: need to find a way to solve issue of null-insert or override with event
+    // TODO: find a way to solve issue of null-insert or override with event
 //    @Generated(event = EventType.INSERT)
     @Column(columnDefinition = "boolean not null default true")
     private Boolean isActive =  Boolean.TRUE;
 
-    @ColumnDefault("'ROLE_USER'")
     @Column(length = 254, nullable = false)
-    private String roles;
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "user_role",
+            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+    )
+    @JsonIgnoreProperties("users")
+    private List<Role> roles;
 
 }

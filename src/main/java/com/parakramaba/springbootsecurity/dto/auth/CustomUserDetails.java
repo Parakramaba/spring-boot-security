@@ -1,11 +1,11 @@
-package com.parakramaba.springbootsecurity.dto;
+package com.parakramaba.springbootsecurity.dto.auth;
 
 import com.parakramaba.springbootsecurity.entity.User;
+import com.parakramaba.springbootsecurity.entity.auth.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,7 +15,7 @@ public class CustomUserDetails implements UserDetails {
     private String userName;
     private String password;
     private boolean isActive;
-    private List<GrantedAuthority> authorities;
+    private List<SimpleGrantedAuthority> authorities;
 
 
     public CustomUserDetails() {
@@ -25,7 +25,8 @@ public class CustomUserDetails implements UserDetails {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.isActive = user.getIsActive();
-        this.authorities = Arrays.stream(user.getRoles().split(","))
+        this.authorities = user.getRoles().stream()
+                .map(Role::getName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
