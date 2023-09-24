@@ -3,6 +3,7 @@ package com.parakramaba.springbootsecurity.service;
 import com.parakramaba.springbootsecurity.dto.UserDto;
 import com.parakramaba.springbootsecurity.entity.User;
 import com.parakramaba.springbootsecurity.entity.auth.Role;
+import com.parakramaba.springbootsecurity.exception.ErrorMessages;
 import com.parakramaba.springbootsecurity.exception.ResourceNotFoundException;
 import com.parakramaba.springbootsecurity.repository.UserRepository;
 import com.parakramaba.springbootsecurity.repository.auth.RoleRepository;
@@ -57,12 +58,21 @@ public class UserService {
 
     private List<Role> setUserRoles(final List<Integer> roleIds) {
         List<Role> userRoles = new ArrayList<>();
-        for (Integer roleId
-                : roleIds
-        ) {
-            Role role = roleRepository.findById(roleId).orElseThrow(()
-                    -> new ResourceNotFoundException("Role not found"));
-            userRoles.add(role);
+        
+        // Add default role for user
+        if (roleIds == null || roleIds.isEmpty()) {
+            Role defaultRole = roleRepository.findById(1).orElseThrow(()
+                    -> new ResourceNotFoundException(ErrorMessages.ROLE_NOT_FOUND_MSG));
+            userRoles.add(defaultRole);
+        }
+        else {
+            for (Integer roleId
+                    : roleIds
+            ) {
+                Role role = roleRepository.findById(roleId).orElseThrow(()
+                        -> new ResourceNotFoundException(ErrorMessages.ROLE_NOT_FOUND_MSG));
+                userRoles.add(role);
+            }
         }
         return userRoles;
     }
