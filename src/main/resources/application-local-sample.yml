@@ -7,10 +7,11 @@ spring:
     username: root
     password: password
 
-  redis:
-    database: 0
-    host: localhost
-    port: 6379
+  data:
+    redis:
+      database: 0
+      host: localhost
+      port: 6379
 
   session:
     store-type: redis
