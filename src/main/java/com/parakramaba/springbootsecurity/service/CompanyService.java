@@ -15,7 +15,6 @@ import java.util.stream.LongStream;
 @Service("CompanyService")
 public class CompanyService {
 
-
     /**
      *
      * @return
@@ -25,7 +24,7 @@ public class CompanyService {
                 .mapToObj(i -> new Company(i, "Company " + i, 10))
                 .collect(Collectors.toList());
 
-        return new ResponseEntity<>(companies, HttpStatus.OK);
+        return ResponseEntity.ok(companies);
     }
 
     /**
@@ -40,6 +39,6 @@ public class CompanyService {
                 .noOfEmployees(75)
                 .build();
 
-        return new ResponseEntity<>(company, HttpStatus.OK);
+        return ResponseEntity.ok(company);
     }
 }
