@@ -1,7 +1,6 @@
 package com.parakramaba.springbootsecurity.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.parakramaba.springbootsecurity.entity.auth.Role;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.Generated;
@@ -36,13 +35,16 @@ public class User implements Serializable {
     private Boolean isActive =  Boolean.TRUE;
 
     @Column(length = 254, nullable = false)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "user_role",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
-    )
-    @JsonIgnoreProperties("users")
-    private List<Role> roles;
+    // FIXME: Will be needed in future iterations
+//    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+//    @JoinTable(
+//            name = "user_role",
+//            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id")
+//    )
+//    @JsonIgnoreProperties("users")
+//    private List<Role> roles;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
 }
