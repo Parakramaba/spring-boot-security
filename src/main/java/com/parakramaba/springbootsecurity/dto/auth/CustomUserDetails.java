@@ -1,7 +1,7 @@
 package com.parakramaba.springbootsecurity.dto.auth;
 
 import com.parakramaba.springbootsecurity.entity.User;
-import com.parakramaba.springbootsecurity.entity.Role;
+import com.parakramaba.springbootsecurity.entity.auth.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -15,24 +15,21 @@ public class CustomUserDetails implements UserDetails {
     private String userName;
     private String password;
     private boolean isActive;
-    // FIXME: Will be needed in future iterations
-//    private List<SimpleGrantedAuthority> authorities;
-    private Role role;
+    private List<SimpleGrantedAuthority> authorities;
 
     public CustomUserDetails(User user) {
         this.userName = user.getUserName();
         this.password = user.getPassword();
         this.isActive = user.getIsActive();
-//        this.authorities = user.getRoles().stream()
-//                .map(Role::getName)
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList());
-        this.role = user.getRole();
+        this.authorities = user.getRoles().stream()
+                .map(Role::getName)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return authorities;
     }
 
     @Override
