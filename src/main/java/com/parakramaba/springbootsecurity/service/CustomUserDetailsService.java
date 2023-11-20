@@ -2,6 +2,7 @@ package com.parakramaba.springbootsecurity.service;
 
 import com.parakramaba.springbootsecurity.dto.auth.CustomUserDetails;
 import com.parakramaba.springbootsecurity.entity.User;
+import com.parakramaba.springbootsecurity.exception.ErrorMessages;
 import com.parakramaba.springbootsecurity.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,8 +26,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Transactional
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
         Optional<User> user = userRepository.findByUserName(userName);
-        // TODO: handle UsernameNotFoundException properly
-        user.orElseThrow(() -> new UsernameNotFoundException("User " + userName + " not found"));
+        user.orElseThrow(() -> new UsernameNotFoundException(ErrorMessages.USER_NOT_FOUND_MSG + userName));
         return user.map(CustomUserDetails::new).get();
     }
 }
