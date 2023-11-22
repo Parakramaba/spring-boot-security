@@ -78,7 +78,7 @@ public class AuthenticationService {
             throws ResourceNotFoundException, BadCredentialsException {
 
         String userName = authRequestDto.getUserName();
-        User user = userRepository.findByUserName(authRequestDto.getUserName())
+        User user = userRepository.findByUserNameAndIsActiveTrue(authRequestDto.getUserName())
                 .orElseThrow(() -> new UsernameNotFoundException(
                         ErrorMessages.USER_NOT_FOUND_MSG + userName));
 

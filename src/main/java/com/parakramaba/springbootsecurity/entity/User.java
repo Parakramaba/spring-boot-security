@@ -36,7 +36,7 @@ public class User implements Serializable {
     private Boolean isActive =  Boolean.TRUE;
 
     @Column(length = 254, nullable = false)
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

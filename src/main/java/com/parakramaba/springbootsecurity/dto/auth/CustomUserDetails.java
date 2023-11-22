@@ -7,39 +7,32 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class CustomUserDetails implements UserDetails {
 
-    private String userName;
-    private String password;
-    private boolean isActive;
-    private List<SimpleGrantedAuthority> authorities;
+    private User user;
 
     public CustomUserDetails(User user) {
-        this.userName = user.getUserName();
-        this.password = user.getPassword();
-        this.isActive = user.getIsActive();
-        this.authorities = user.getRoles().stream()
+        this.user = user;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return user.getRoles().stream()
                 .map(Role::getName)
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return authorities;
-    }
-
-    @Override
     public String getPassword() {
-        return password;
+        return user.getPassword();
     }
 
     @Override
     public String getUsername() {
-        return userName;
+        return user.getUserName();
     }
 
     @Override
@@ -59,6 +52,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return user.getIsActive();
     }
 }
