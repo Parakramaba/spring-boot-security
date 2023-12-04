@@ -54,7 +54,7 @@ public class AuthenticationService {
             throws ValidationException, ResourceNotFoundException {
 
         String userName = userDto.getUserName();
-        if (userRepository.existsByUserName(userDto.getUserName()) == true) {
+        if (userRepository.existsByUserName(userDto.getUserName())) {
             throw new ValidationException("The username you entered is already using by another user." +
                     " Please enter a different username");
         }
